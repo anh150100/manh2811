@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'src/my_app.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,9 +15,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Raleway'
-      ),
+      // theme: ThemeData(
+      //     fontFamily: 'Raleway'
+      // ),
       home: HomeScreen(),
     );
   }
@@ -110,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
              icon: Icons.call,
              title: "CALL",
              color: Colors.blue,
+              function: null,
            ),
          ),
          Expanded(
@@ -118,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                icon: Icons.call,
                title: "CALL",
                color: Colors.blue,
+             function: null,
              ),
          ),
          Expanded(
@@ -126,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                icon: Icons.share,
                title: "SHARE",
                color: Colors.blue,
+                function: null,
               ),
          ),
        ],
