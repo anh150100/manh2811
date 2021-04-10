@@ -1,7 +1,5 @@
 
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_app/popular.dart';
 
 void main() {
@@ -30,7 +28,7 @@ class HomeScreen extends StatefulWidget {
 
 
 class _HomeScreenState extends State<HomeScreen>with TickerProviderStateMixin {
-  late TabController _controller;
+  TabController _controller;
   @override
   void initState() {
     super.initState();
