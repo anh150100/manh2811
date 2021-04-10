@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:ui_app/popular.dart';
-
 void main() {
   runApp(MyApp());
 }
