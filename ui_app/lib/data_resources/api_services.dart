@@ -7,55 +7,53 @@ import 'dart:convert' show json;
 import 'package:ui_app/resources/string.dart';
 
 class ApiServices {
-  getPopularList() async {
-    List<PopularMovie> popularList = [];
-    var fullPopularUrl = ApiUrls().popularApiUrl;
 
-    var response = await http.get(fullPopularUrl);
+  fetchAllPopularMovies() async{
 
-    if(response.statusCode == 200){
-
+    List<PopularMovieModel> popularMoviesList = [];
+    var response = await http.get(ApiUrls().popularMovieApiUrl());
+    if (response.statusCode == 200)
+    {
       var body = json.decode(response.body);
       List listJson = body['results'];
       for(int i = 0; i < listJson.length ; i++ )
       {
-      //  print("here");
-        var json = listJson[i];
-        PopularMovie popularModel = PopularMovie.fromJson(json);
-      //  print("Độ dài:" + imageList.length.toString());
-        popularList.add(popularModel);
+        PopularMovieModel movieModel = PopularMovieModel.fromJson(listJson[i]);
+        popularMoviesList.add(movieModel);
       }
-
 
     }
     else throw Exception(errorFromApi);
-    return popularList;
+
+    return popularMoviesList;
   }
 
 
-  getPopularCastList(movieId) async {
-    List<PopularMovieCast> popularCastList = [];
-    var fullPopularCastUrl = ApiUrls().movieCastUrl(movieId);
+  fetchMovieCast(movieId) async {
 
-    var response = await http.get(fullPopularCastUrl);
+    List<PopularMovieCastModel> popularMoviesCastList = [];
+    var fullVideoUrl = ApiUrls().movieCastUrl(movieId);
 
-    if(response.statusCode == 200){
+    var response = await http.get(fullVideoUrl);
 
+
+    if (response.statusCode == 200)
+    {
       var body = json.decode(response.body);
       List listJson = body['cast'];
       for(int i = 0; i < listJson.length ; i++ )
       {
-       // print("here");
-        if (listJson[i]['profile_path'] != null){
-          var json = listJson[i];
-        PopularMovieCast castModel = PopularMovieCast.fromJson(json);
-       // print("Độ dài:" + popularCastList.length.toString());
-        popularCastList.add(castModel);}
+        if (listJson[i]['profile_path'] != null) {
+          PopularMovieCastModel castModel = PopularMovieCastModel.fromJson(listJson[i]);
+          popularMoviesCastList.add(castModel);
+        }
+
+
       }
 
     }
     else throw Exception(errorFromApi);
-    return popularCastList;
-  }
 
+    return popularMoviesCastList;
+  }
 }

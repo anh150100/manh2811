@@ -13,13 +13,13 @@ class _PopularViewState extends State<PopularView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: ApiServices().getPopularList(),
+        future: ApiServices().fetchAllPopularMovies(),
         builder: (context, snapshot) {
           if((snapshot.hasError)||(!snapshot.hasData))
             return Center(
               child: Text("Loading.."),
             );
-          List<PopularMovie> moviesList = snapshot.data;
+          List<PopularMovieModel> moviesList = snapshot.data;
           return GridView.builder(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -36,7 +36,7 @@ class _PopularViewState extends State<PopularView> {
     );
   }
 
-  Widget _itemPopular(BuildContext context, PopularMovie itemPopular) {
+  Widget _itemPopular(BuildContext context, PopularMovieModel itemPopular) {
 
 
     return GestureDetector(
@@ -96,6 +96,4 @@ class _PopularViewState extends State<PopularView> {
   }
 
 }
-
-
 
