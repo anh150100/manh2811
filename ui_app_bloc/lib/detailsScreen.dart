@@ -8,7 +8,7 @@ import 'package:ui_app/pages/popular_cast/popular_movie_cast.dart';
 import 'package:ui_app/pages/popular_movies/popular_movie.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final PopularMovie itemPopular;
+  final PopularMovieModel itemPopular;
   const DetailsScreen({Key key, this.itemPopular}) : super(key: key);
 
   @override
@@ -108,7 +108,7 @@ class DetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Thể Loại: " ,
+                        "Thể Loaị: ",
                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
@@ -147,13 +147,13 @@ class DetailsScreen extends StatelessWidget {
           Container(
             height: 160,
             child: FutureBuilder(
-                future: ApiServices().getPopularCastList(itemPopular.id),
+                future: ApiServices().fetchMovieCast(itemPopular.id),
                 builder: (context, snapshot) {
                   if((snapshot.hasError)||(!snapshot.hasData))
                     return Center(
                       child: Text("Loading.."),
                     );
-                  List<PopularMovieCast> castList = snapshot.data;
+                  List<PopularMovieCastModel> castList = snapshot.data;
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: ClampingScrollPhysics(),
@@ -171,7 +171,7 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
-  _itemCast(PopularMovieCast itemCast) {
+  _itemCast(PopularMovieCastModel itemCast) {
     return Container(
       margin: EdgeInsets.only(right: 12),
       child: Column(

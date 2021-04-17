@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ui_app/bloc/popular_bloc.dart';
+import 'package:ui_app/blocs/popular_bloc.dart';
 import 'package:ui_app/data_resources/api_services.dart';
 import 'package:ui_app/data_resources/string_url.dart';
 import 'package:ui_app/detailsScreen.dart';
@@ -17,7 +17,7 @@ class _PopularViewState extends State<PopularView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    popularBloc.fetchAllMovies();
+    popularBloc.fetchAllVideos();
   }
   @override
   void dispose() {
@@ -25,38 +25,29 @@ class _PopularViewState extends State<PopularView> {
     super.dispose();
     popularBloc.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
-    final videoList = Provider.of<List<PopularMovie>>(context);
-    return Container(
-      child: StreamBuilder(
-          stream: popularBloc.allVideos,
-          builder: (context, snapshot) {
-            if ((snapshot.hasError) || (!snapshot.hasData))
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            List<PopularMovie> videoList = snapshot.data;
-            return GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.62,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 30),
-              itemCount:videoList.length,
-              itemBuilder: (context, index) {
-                return _itemPopular(context, videoList[index]);
-              },
-
-            );
-          }
-      ),
-    );
+    final videoList = Provider.of<List<PopularMovieModel>>(context);
+          return Container(
+              child: videoList!=null? GridView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 0.62,
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 30),
+            itemCount: videoList.length,
+            itemBuilder: (context, index) {
+              return _itemPopular(context, videoList[index]);
+            },
+          ): Center(
+            child: CircularProgressIndicator(),
+    ),
+          );
+  }
   }
 
-  Widget _itemPopular(BuildContext context, PopularMovie itemPopular) {
+  Widget _itemPopular(BuildContext context, PopularMovieModel itemPopular) {
 
 
     return GestureDetector(
@@ -114,8 +105,6 @@ class _PopularViewState extends State<PopularView> {
       ),
     );
   }
-
-}
 
 
 
