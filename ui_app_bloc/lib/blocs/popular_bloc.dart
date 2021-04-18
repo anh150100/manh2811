@@ -12,7 +12,7 @@ class PopularBloc {
   final videoSubject = PublishSubject<List<PopularMovieModel>>();
 
   // nhúng data từ Data Layer vào Stream
-  fetchAllVideos () async {
+  fetchAllMovies () async {
     List<PopularMovieModel> videoList = await _repository.fetchAllMovies();
     videoSubject.sink.add(videoList);
   }

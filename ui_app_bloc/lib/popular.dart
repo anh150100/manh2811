@@ -1,10 +1,12 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ui_app/blocs/popular_bloc.dart';
-import 'package:ui_app/data_resources/api_services.dart';
 import 'package:ui_app/data_resources/string_url.dart';
 import 'package:ui_app/detailsScreen.dart';
 import 'pages/popular_movies/popular_movie.dart';
+
 
 class PopularView extends StatefulWidget {
   @override
@@ -13,47 +15,63 @@ class PopularView extends StatefulWidget {
 
 class _PopularViewState extends State<PopularView> {
   final popularBloc = PopularBloc();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    popularBloc.fetchAllVideos();
+    popularBloc.fetchAllMovies();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     popularBloc.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    final videoList = Provider.of<List<PopularMovieModel>>(context);
-          return Container(
-              child: videoList!=null? GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 0.62,
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 30),
-            itemCount: videoList.length,
-            itemBuilder: (context, index) {
-              return _itemPopular(context, videoList[index]);
-            },
-          ): Center(
-            child: CircularProgressIndicator(),
-    ),
-          );
+  // ignore: unused_local_variable
+  final videoList = Provider.of<List<PopularMovieModel>>(context);
+    return Scaffold(
+      body: Container(
+        child: StreamBuilder(
+            stream: popularBloc.allMovie,
+            builder: (context, snapshot)
+            {
+              if((snapshot.hasError)||(!snapshot.hasData))
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              List<PopularMovieModel> videoList = snapshot.data;
+              return GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.62,
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 30),
+                itemCount: videoList.length,
+                itemBuilder: (context, index) {
+                  return _itemPopular(context, videoList[index]);
+                },
+              );
+            }
+        ),
+      ),
+    );
   }
-  }
+
+
+
 
   Widget _itemPopular(BuildContext context, PopularMovieModel itemPopular) {
-
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => DetailsScreen(itemPopular: itemPopular)));
+            context, MaterialPageRoute(
+            builder: (_) => DetailsScreen(itemPopular: itemPopular)));
       },
       child: Column(
         children: [
@@ -67,7 +85,8 @@ class _PopularViewState extends State<PopularView> {
                         borderRadius: BorderRadius.circular(18),
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(POSTER_IN_DETAIL_LINK + itemPopular.poster_path))),
+                            image: NetworkImage(POSTER_IN_DETAIL_LINK +
+                                itemPopular.poster_path))),
 
                   ),
                   Container(
@@ -105,6 +124,12 @@ class _PopularViewState extends State<PopularView> {
       ),
     );
   }
+
+
+
+}
+
+
 
 
 

@@ -11,9 +11,11 @@ class MyApp extends StatelessWidget {
   final popularBloc = PopularBloc();
   @override
   Widget build(BuildContext context) {
-    popularBloc.fetchAllVideos();
+    popularBloc.fetchAllMovies();
+    // ignore: missing_required_param
     return StreamProvider<List<PopularMovieModel>>(
         create: (context) => popularBloc.allMovie,
+        // ignore: missing_return
         catchError: (context, error)
         {
           print(error.toString());
